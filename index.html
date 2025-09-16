@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday My Love ❤️</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #ff9a9e, #fad0c4);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #d63384;
+      margin-top: 30px;
+    }
+
+    .letter {
+      background: #fff;
+      padding: 20px;
+      margin: 20px auto;
+      width: 80%;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.2);
+      z-index: 1;
+      position: relative;
+    }
+
+    
+
+    /* Vertical Reels Video */
+    .video-reel {
+      position: absolute;
+      top: 340px;      /* adjust vertical position */
+      right: 650px;    /* adjust horizontal position */
+      width: 180px;   /* width for 9:16 ratio */
+      height: 320px;  /* height for 9:16 ratio */
+      object-fit: cover;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.3);
+      z-index: 2;
+    }
+
+    /* Balloons */
+    .balloon {
+      position: absolute;
+      bottom: -150px;
+      width: 60px;
+      height: 80px;
+      background: red;
+      border-radius: 50%;
+      animation: floatUp 10s infinite ease-in;
+      opacity: 0.8;
+      z-index: 0;
+    }
+    .balloon:before {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 40px;
+      background: #555;
+      left: 50%;
+      top: 80px;
+      transform: translateX(-50%);
+    }
+    @keyframes floatUp {
+      from { transform: translateY(0) rotate(0deg); }
+      to { transform: translateY(-110vh) rotate(20deg); }
+    }
+
+    /* Fireworks canvas */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🎂 Happy Birthday, My Love ❤️ 🎂</h1>
+  
+  <div class="letter">
+    <p>
+      My dearest, today is all about you. You are the most beautiful part of my life, 
+      and I feel blessed to celebrate another year of your existence. You make me smile 
+      brighter, laugh harder, and dream bigger. I hope this birthday brings you as much 
+      joy as you bring to me every single day. 💕
+    </p>
+  </div>
+
+
+  <!-- Vertical Reels-style Video -->
+  <video class="video-reel" controls>
+    <source src="0917.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Balloons -->
+  <div class="balloon" style="left:10%; background:#ff4d6d;"></div>
+  <div class="balloon" style="left:30%; background:#4da6ff;"></div>
+  <div class="balloon" style="left:50%; background:#ffd633;"></div>
+  <div class="balloon" style="left:70%; background:#66ff99;"></div>
+  <div class="balloon" style="left:90%; background:#ff66ff;"></div>
+
+  <!-- Fireworks -->
+  <canvas id="fireworks"></canvas>
+
+  <script>
+    // Fireworks effect
+    const canvas = document.getElementById("fireworks");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    class Firework {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height;
+        this.targetY = Math.random() * canvas.height / 2;
+        this.color = `hsl(${Math.random() * 360}, 100%, 50%)`;
+        this.particles = [];
+      }
+      update() {
+        if (this.y > this.targetY) {
+          this.y -= 5;
+        } else {
+          for (let i = 0; i < 50; i++) {
+            this.particles.push(new Particle(this.x, this.y, this.color));
+          }
+          fireworks.splice(fireworks.indexOf(this), 1);
+        }
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    class Particle {
+      constructor(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.speedX = (Math.random() - 0.5) * 5;
+        this.speedY = (Math.random() - 0.5) * 5;
+        this.life = 100;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.life--;
+      }
+      draw() {
+        ctx.fillStyle = this.color;
+        ctx.globalAlpha = this.life / 100;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    let fireworks = [];
+
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (Math.random() < 0.05) {
+        fireworks.push(new Firework());
+      }
+      fireworks.forEach(fw => {
+        fw.update();
+        fw.draw();
+        fw.particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+      });
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener("resize", () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    });
+  </script>
+
+</body>
+</html>
